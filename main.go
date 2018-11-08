@@ -2,9 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -22,6 +25,18 @@ type Book struct {
 type Author struct {
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
+}
+
+//Get All Books
+func mainPage(w http.ResponseWriter, r *http.Request) {
+	img, _ := os.Create("image.jpg")
+	defer img.Close()
+
+	resp, _ := http.Get("http://i.imgur.com/Dz2r9lk.jpg")
+	defer resp.Body.Close()
+
+	b, _ := io.Copy(img, resp.Body)
+	fmt.Println("File size: ", b)
 }
 
 //Get All Books
@@ -94,6 +109,7 @@ func main() {
 	books = append(books, Book{ID: "1", Isbn: "123456", Title: "Book One", Author: &Author{Firstname: "Tharindu", Lastname: "Muhandiram"}})
 	books = append(books, Book{ID: "2", Isbn: "123457", Title: "Book Two", Author: &Author{Firstname: "Chathurika", Lastname: "Lakmali"}})
 
+	r.HandleFunc("/", mainPage).Methods("GET")
 	r.HandleFunc("/api/books", getBooks).Methods("GET")
 	r.HandleFunc("/api/books/{id}", getBook).Methods("GET")
 	r.HandleFunc("/api/books", createBook).Methods("POST")
