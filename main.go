@@ -2,12 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"io"
+	"html/template"
 	"log"
 	"math/rand"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -29,14 +27,8 @@ type Author struct {
 
 //Get All Books
 func mainPage(w http.ResponseWriter, r *http.Request) {
-	img, _ := os.Create("image.jpg")
-	defer img.Close()
-
-	resp, _ := http.Get("http://i.imgur.com/Dz2r9lk.jpg")
-	defer resp.Body.Close()
-
-	b, _ := io.Copy(img, resp.Body)
-	fmt.Println("File size: ", b)
+	index := template.Must(template.ParseFiles("./templates/index.html"))
+	index.Execute(w, nil)
 }
 
 //Get All Books
