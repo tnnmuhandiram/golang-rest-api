@@ -94,13 +94,14 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 }
 
 //Init a book
+var books []Book
 
 func main() {
 	//Init Router
 	r := mux.NewRouter()
 
 	//Initilizing data
-	books = append(books, Book{ID: "1", Isbn: "123456", Title: "Book One", Author: &Author{Firstname: "Tharindu", Lastname: "Muhandiram"}})
+	// books = append(books, Book{ID: "1", Isbn: "123456", Title: "Book One", Author: &Author{Firstname: "Tharindu", Lastname: "Muhandiram"}})
 
 	r.HandleFunc("/", mainPage).Methods("GET")
 	r.HandleFunc("/api/books", getBooks).Methods("GET")
@@ -108,7 +109,7 @@ func main() {
 	r.HandleFunc("/api/books", createBook).Methods("POST")
 	r.HandleFunc("/api/books/{id}", updateBook).Methods("PUT")
 	r.HandleFunc("/api/books/{id}", deleteBook).Methods("DELETE")
-	fmt.Println("GO REST server running on http://localhost:4200 ")
 
 	log.Fatal(http.ListenAndServe(":4200", r))
+	fmt.Println("GO REST server running on http://localhost:4200 ")
 }
