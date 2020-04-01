@@ -5,10 +5,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -30,8 +30,9 @@ type Author struct {
 
 //Get All Books
 func mainPage(w http.ResponseWriter, r *http.Request) {
-	index := template.Must(template.ParseFiles("./templates/index.html"))
-	index.Execute(w, nil)
+	fmt.Printf("golang get process env variable ", os.Getenv("FOO"))
+	// index := template.Must(template.ParseFiles("./templates/index.html"))
+	// index.Execute(w, nil)
 }
 
 //Get All Books
