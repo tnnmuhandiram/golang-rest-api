@@ -33,6 +33,7 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("golang get process env variable ", os.Getenv("FOO"))
 	// index := template.Must(template.ParseFiles("./templates/index.html"))
 	// index.Execute(w, nil)
+	json.NewEncoder(w).Encode(os.Getenv("FOO"))
 }
 
 //Get All Books
