@@ -28,12 +28,32 @@ type Author struct {
 	Lastname  string `json:"lastname"`
 }
 
+type Configuration struct {
+	Users  []string
+	Groups []string
+}
+
 //Get All Books
 func mainPage(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("golang get process env variable ", os.Getenv("FOO"))
 	// index := template.Must(template.ParseFiles("./templates/index.html"))
 	// index.Execute(w, nil)
-	json.NewEncoder(w).Encode(os.Getenv("FOO"))
+
+	file, _ := os.Open("config.json")
+	defer file.Close()
+	decoder := json.NewDecoder(file)
+	configuration := Configuration{}
+	err := decoder.Decode(&configuration)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+	fmt.Println(configuration.Users)
+	out := map[string]interface{}{
+		"Config File Data ":  configuration.Users,
+		"Env Variables Data": os.Getenv("FOO"),
+	}
+
+	json.NewEncoder(w).Encode(out)
 }
 
 //Get All Books
